@@ -54,34 +54,34 @@ public class TextBuddy {
 				clear(fileName);
 				System.out.println(String.format(MESSAGE_CLEAR, fileName)); 
 			}
-			
+
 			else if (command.equals("delete")){
 				delete(fileName, file, sc);	
 			}
-			
+
 			else if (command.equals("add")) {
 				String text = sc.nextLine();
 				add(fileName, file, text);
 				System.out.println(String.format(MESSAGE_ADD, fileName, text));
 			}
-			
+
 			else if (command.equals("sort")) {
 				sort(fileName, file);
 			}
-			
+
 			else if (command.equals("search")) {
 				search(sc.next(), fileName, file);
 			}
-			
+
 			else if (command.equals("exit")) {
 				sc.close();
 				break;
 			}
-			
+
 			else if (command.equals("sort")) {
 				sort(fileName, file);
 			}
-			
+
 			else {
 				System.out.print(MESSAGE_COMMAND_ERROR);
 				sc.close();
@@ -111,7 +111,6 @@ public class TextBuddy {
 		else {
 			System.out.println(String.format(MESSAGE_NO_DISPLAY, fileName)); 
 		}
-
 		br.close();
 	} 
 
@@ -203,6 +202,7 @@ public class TextBuddy {
 		writer.newLine();
 		writer.close();
 	}
+	
 	//sorts inputs to alphabetical order
 	private static void sort(String fileName, File file) throws IOException {
 		List<String> lines = new ArrayList<String>();
@@ -212,9 +212,9 @@ public class TextBuddy {
 		for (String element : lines) {
 			add(fileName, file, element);
 		}
-
 	}
 
+	//search for a string user typed in
 	private static void search (String wordSearched, String fileName, File file) throws IOException {
 		List<String> lines = new ArrayList<String>();
 		lines = Files.readAllLines(Paths.get(fileName));
@@ -223,8 +223,5 @@ public class TextBuddy {
 				System.out.println(element);
 			}
 		}
-
 	}
-
-
 }

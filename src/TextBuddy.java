@@ -56,10 +56,10 @@ public class TextBuddy {
 			else if (command.equals("sort")) {
 				sort(fileName, file);
 			}
-/*			else if (command.equals("search")) {
-				search();
+			else if (command.equals("search")) {
+				search(sc.next(), fileName, file);
 			}
-*/			else if (command.equals("exit")) {
+			else if (command.equals("exit")) {
 				sc.close();
 				break;
 			}
@@ -199,10 +199,16 @@ public class TextBuddy {
 
 	}
 	
-/*	@Test
-	private static void search () {
+	private static void search (String wordSearched, String fileName, File file) throws IOException {
+		List<String> lines = new ArrayList<String>();
+		lines = Files.readAllLines(Paths.get(fileName));
+		for (String element : lines ) {
+			if (element.contains(wordSearched)) {
+				System.out.println(element);
+			}
+		}
 		
 	}
-*/
+
 	
 }

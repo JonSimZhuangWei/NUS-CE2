@@ -14,9 +14,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +53,13 @@ public class TextBuddy {
 				add(fileName, file, text);
 				System.out.println("added to " + fileName + ": " + '"' + text + '"' );
 			}
-			else if (command.equals("exit")) {
+			else if (command.equals("sort")) {
+				sort(fileName, file);
+			}
+/*			else if (command.equals("search")) {
+				search();
+			}
+*/			else if (command.equals("exit")) {
 				sc.close();
 				break;
 			}
@@ -176,9 +180,9 @@ public class TextBuddy {
 	//adds string into original file
 	private static void add(String fileName, File file, String text) throws IOException{
 		text = text.trim();
-
 		FileWriter fileWriter = new FileWriter(file,true);    
 		BufferedWriter writer = new BufferedWriter(fileWriter);
+		
 		writer.write(text);
 		writer.newLine();
 		writer.close();
@@ -194,5 +198,11 @@ public class TextBuddy {
 		}
 
 	}
+	
+/*	@Test
+	private static void search () {
+		
+	}
+*/
 	
 }

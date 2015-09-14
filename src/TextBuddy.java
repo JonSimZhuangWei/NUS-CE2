@@ -22,6 +22,17 @@ import java.util.List;
 import java.util.Scanner;
 
 public class TextBuddy {
+	private static final String MESSAGE_GREETINGS = "Welcome to TextBuddy. %1$s is ready to use";
+	private static final String MESSAGE_COMMAND = "Command: "; 
+	private static final String MESSAGE_CLEAR = "All contents deleted from %1$s";
+	private static final String MESSAGE_DELETE = "deleted from %1$s: \"%2$s\"";
+	private static final String MESSAGE_DELETE_ERROR = "line not found, unable to delete";
+	private static final String MESSAGE_ADD = "Added to %1$s: \"%2$s\""; 
+	private static final String MESSAGE_COMMAND_ERROR = "Added to %1$s: \"%2$s\""; 
+	private static final String MESSAGE_NO_DISPLAY = "%1$s is empty"; 
+	private static final String MESSAGE_SEARCH = "%1$s";
+	
+	private static final String TEMP_FILE = "mytempfile.txt"; 
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		String fileName = args[0];
@@ -42,7 +53,8 @@ public class TextBuddy {
 
 			else if (command.equals("clear")) {
 				clear(fileName);
-				System.out.println("all content deleted from " + fileName);
+				System.out.println(String.format(MESSAGE_CLEAR, fileName)); 
+
 			}
 
 			else if (command.equals("delete")){
@@ -51,7 +63,7 @@ public class TextBuddy {
 			else if (command.equals("add")) {
 				String text = sc.nextLine();
 				add(fileName, file, text);
-				System.out.println("added to " + fileName + ": " + '"' + text + '"' );
+				System.out.println(String.format(MESSAGE_ADD, fileName, text)); 
 			}
 			else if (command.equals("sort")) {
 				sort(fileName, file);
@@ -67,7 +79,7 @@ public class TextBuddy {
 				sort(fileName, file);
 			}
 			else {
-				System.out.println("command not recognised, exiting program");
+				System.out.print(MESSAGE_COMMAND_ERROR);
 				sc.close();
 				break;
 			}
@@ -76,8 +88,8 @@ public class TextBuddy {
 	}
 
 	private static void greetings(String fileName) {
-		System.out.println("Welcome to TextBuddy. " + fileName + " is ready for use");
-		System.out.println("command:");
+		System.out.println(String.format(MESSAGE_GREETINGS, fileName));
+		System.out.print(MESSAGE_COMMAND);
 	}
 
 	//displays text in the original file
@@ -93,7 +105,7 @@ public class TextBuddy {
 			}
 		}
 		else {
-			System.out.println(fileName + " is empty");
+			System.out.println(String.format(MESSAGE_NO_DISPLAY, fileName)); 
 		}
 
 		br.close();
@@ -104,8 +116,8 @@ public class TextBuddy {
 		int lineToDelete = sc.nextInt();
 		sc.nextLine(); // clears input stream
 		int numberOfLinesInFile = 0;
-		File tempFile = new File("myTempFile.txt"); // temp file
-		String temp = "myTempFile.txt";
+		File tempFile = new File(TEMP_FILE); // temp file
+		String temp = TEMP_FILE;
 
 		BufferedReader reader = null;
 		reader = new BufferedReader(new FileReader(file));
@@ -115,7 +127,7 @@ public class TextBuddy {
 		}
 
 		if (((lineToDelete)> numberOfLinesInFile) || (lineToDelete<1)) {
-			System.out.println("line not found, unable to delete");
+			System.out.print(MESSAGE_DELETE_ERROR);
 			System.gc();
 			tempFile.delete();
 		}
@@ -160,7 +172,7 @@ public class TextBuddy {
 		while((currentLine = copyFileReader.readLine()) != null) {
 			if(lineTracker ==(lineToDelete)) {
 				lineTracker++;
-				System.out.println("deleted from " + fileName + ": " + '"' + currentLine + '"' );
+				System.out.println(String.format(MESSAGE_DELETE, fileName, currentLine)); 
 				continue;
 			}
 			add(temp, tempFile, currentLine);
@@ -204,7 +216,7 @@ public class TextBuddy {
 		lines = Files.readAllLines(Paths.get(fileName));
 		for (String element : lines ) {
 			if (element.contains(wordSearched)) {
-				System.out.println(element);
+				System.out.println(MESSAGE_SEARCH, element);
 			}
 		}
 		

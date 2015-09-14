@@ -14,6 +14,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class TextBuddy {
@@ -51,6 +58,9 @@ public class TextBuddy {
 			else if (command.equals("exit")) {
 				sc.close();
 				break;
+			}
+			else if (command.equals("sort")) {
+				sort(fileName, file);
 			}
 			else {
 				System.out.println("command not recognised, exiting program");
@@ -90,7 +100,7 @@ public class TextBuddy {
 		int lineToDelete = sc.nextInt();
 		sc.nextLine(); // clears input stream
 		int numberOfLinesInFile = 0;
-		File tempFile = new File("myTempFile.txt");// temp file
+		File tempFile = new File("myTempFile.txt"); // temp file
 		String temp = "myTempFile.txt";
 
 		BufferedReader reader = null;
@@ -173,4 +183,16 @@ public class TextBuddy {
 		writer.newLine();
 		writer.close();
 	}
+	//sorts inputs to alphabetical order
+	private static void sort(String fileName, File file) throws IOException {
+		List<String> lines = new ArrayList<String>();
+		lines = Files.readAllLines(Paths.get(fileName));
+		Collections.sort(lines);
+		clear(fileName);
+		for (String element : lines) {
+			add(fileName, file, element);
+		}
+
+	}
+	
 }

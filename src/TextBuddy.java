@@ -23,15 +23,14 @@ import java.util.Scanner;
 
 public class TextBuddy {
 	private static final String MESSAGE_GREETINGS = "Welcome to TextBuddy. %1$s is ready to use";
-	private static final String MESSAGE_COMMAND = "Command: "; 
+	private static final String MESSAGE_COMMAND = "command: "; 
 	private static final String MESSAGE_CLEAR = "All contents deleted from %1$s";
 	private static final String MESSAGE_DELETE = "deleted from %1$s: \"%2$s\"";
 	private static final String MESSAGE_DELETE_ERROR = "line not found, unable to delete";
 	private static final String MESSAGE_ADD = "Added to %1$s: \"%2$s\""; 
 	private static final String MESSAGE_COMMAND_ERROR = "Added to %1$s: \"%2$s\""; 
 	private static final String MESSAGE_NO_DISPLAY = "%1$s is empty"; 
-	private static final String MESSAGE_SEARCH = "%1$s";
-	
+
 	private static final String TEMP_FILE = "mytempfile.txt"; 
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
@@ -54,42 +53,47 @@ public class TextBuddy {
 			else if (command.equals("clear")) {
 				clear(fileName);
 				System.out.println(String.format(MESSAGE_CLEAR, fileName)); 
-
 			}
-
+			
 			else if (command.equals("delete")){
 				delete(fileName, file, sc);	
 			}
+			
 			else if (command.equals("add")) {
 				String text = sc.nextLine();
 				add(fileName, file, text);
-				System.out.println(String.format(MESSAGE_ADD, fileName, text)); 
+				System.out.println(String.format(MESSAGE_ADD, fileName, text));
 			}
+			
 			else if (command.equals("sort")) {
 				sort(fileName, file);
 			}
+			
 			else if (command.equals("search")) {
 				search(sc.next(), fileName, file);
 			}
+			
 			else if (command.equals("exit")) {
 				sc.close();
 				break;
 			}
+			
 			else if (command.equals("sort")) {
 				sort(fileName, file);
 			}
+			
 			else {
 				System.out.print(MESSAGE_COMMAND_ERROR);
 				sc.close();
 				break;
 			}
-			System.out.println("command:");
+			System.out.println(MESSAGE_COMMAND);
 		}
 	}
 
 	private static void greetings(String fileName) {
 		System.out.println(String.format(MESSAGE_GREETINGS, fileName));
-		System.out.print(MESSAGE_COMMAND);
+		System.out.println(MESSAGE_COMMAND);
 	}
 
 	//displays text in the original file
@@ -127,7 +131,7 @@ public class TextBuddy {
 		}
 
 		if (((lineToDelete)> numberOfLinesInFile) || (lineToDelete<1)) {
-			System.out.print(MESSAGE_DELETE_ERROR);
+			System.out.println(MESSAGE_DELETE_ERROR);
 			System.gc();
 			tempFile.delete();
 		}
@@ -150,7 +154,7 @@ public class TextBuddy {
 			BufferedWriter writer) throws FileNotFoundException, IOException {
 		BufferedReader tempFileReader = null;
 		tempFileReader = new BufferedReader(new FileReader(tempFile));
-		
+
 		String copyToOriginal;
 
 		while((copyToOriginal = tempFileReader.readLine()) != null) {
@@ -194,7 +198,7 @@ public class TextBuddy {
 		text = text.trim();
 		FileWriter fileWriter = new FileWriter(file,true);    
 		BufferedWriter writer = new BufferedWriter(fileWriter);
-		
+
 		writer.write(text);
 		writer.newLine();
 		writer.close();
@@ -210,17 +214,17 @@ public class TextBuddy {
 		}
 
 	}
-	
+
 	private static void search (String wordSearched, String fileName, File file) throws IOException {
 		List<String> lines = new ArrayList<String>();
 		lines = Files.readAllLines(Paths.get(fileName));
 		for (String element : lines ) {
 			if (element.contains(wordSearched)) {
-				System.out.println(MESSAGE_SEARCH, element);
+				System.out.println(element);
 			}
 		}
-		
+
 	}
 
-	
+
 }

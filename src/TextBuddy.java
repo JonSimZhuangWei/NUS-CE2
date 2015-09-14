@@ -4,7 +4,7 @@
  * The program exits when it does not recognise the command given.
  * The file is saved after each user operation.
  * Testing for sourcetree
-**/
+ **/
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 public class TextBuddy {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException, IOException {
 		String fileName = args[0];
 		File file = new File(args[0]);
 		Scanner sc = new Scanner(System.in);
@@ -27,7 +27,7 @@ public class TextBuddy {
 		commandToDo(fileName, file, sc);
 	}
 
-	private static void commandToDo(String fileName, File file, Scanner sc) {
+	private static void commandToDo(String fileName, File file, Scanner sc) throws FileNotFoundException, IOException {
 		while (true) {
 			String command = sc.next();
 
@@ -67,39 +67,26 @@ public class TextBuddy {
 	}
 
 	//displays text in the original file
-	private static void display(String fileName, File file) {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));     
-			String line = null;
-			int bulletHeader = 2;
-			if ((line = br.readLine()) != null){
-				System.out.println("1. " + line);
-				while ((line = br.readLine()) != null) {
-					System.out.println(bulletHeader + ". " + line);
-					bulletHeader++;
-				}
+	private static void display(String fileName, File file) throws FileNotFoundException, IOException {
+		BufferedReader br = new BufferedReader(new FileReader(file));     
+		String line = null;
+		int bulletHeader = 2;
+		if ((line = br.readLine()) != null){
+			System.out.println("1. " + line);
+			while ((line = br.readLine()) != null) {
+				System.out.println(bulletHeader + ". " + line);
+				bulletHeader++;
 			}
-			else {
-				System.out.println(fileName + " is empty");
-			}
-
-			br.close();
-		} 
-		catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		finally{
-
+		else {
+			System.out.println(fileName + " is empty");
 		}
-	}
+
+		br.close();
+	} 
 
 	//deletes the line number user input
-	private static void delete(String fileName, File file, Scanner sc) {
+	private static void delete(String fileName, File file, Scanner sc)throws FileNotFoundException, IOException {
 		int lineToDelete = sc.nextInt();
 		sc.nextLine(); // clears input stream
 		int numberOfLinesInFile = 0;
@@ -107,19 +94,10 @@ public class TextBuddy {
 		String temp = "myTempFile.txt";
 
 		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(file));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			while (reader.readLine() != null) {
-				numberOfLinesInFile++;
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		reader = new BufferedReader(new FileReader(file));
+
+		while (reader.readLine() != null) {
+			numberOfLinesInFile++;
 		}
 
 		if (((lineToDelete)> numberOfLinesInFile) || (lineToDelete<1)) {
@@ -135,112 +113,64 @@ public class TextBuddy {
 		}
 	}
 
-	private static void deleteTempFile(File tempFile, BufferedWriter writer) {
-		try {
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private static void deleteTempFile(File tempFile, BufferedWriter writer) throws IOException{
+		writer.close();
 		System.gc();
 		tempFile.delete();
 	}
 
 	//copy temp to original file
 	private static void writeTempToOriginalFile(String fileName, File file, File tempFile, BufferedReader reader,
-			BufferedWriter writer) {
+			BufferedWriter writer) throws FileNotFoundException, IOException {
 		BufferedReader tempFileReader = null;
-		try {
-			tempFileReader = new BufferedReader(new FileReader(tempFile));
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		tempFileReader = new BufferedReader(new FileReader(tempFile));
+		
 		String copyToOriginal;
 
-		try {
-			while((copyToOriginal = tempFileReader.readLine()) != null) {
-				add(fileName, file, copyToOriginal);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		while((copyToOriginal = tempFileReader.readLine()) != null) {
+			add(fileName, file, copyToOriginal);
 		}
-
-		try {
-			reader.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		tempFileReader.close();
 	}
 
 	//copy original to temp file
 	private static BufferedWriter copyToTempFile(String fileName, File file, int lineToDelete, File tempFile,
-			String temp) {
+			String temp)throws FileNotFoundException, IOException{
 		BufferedReader copyFileReader = null;
-		try {
-			copyFileReader = new BufferedReader(new FileReader(file));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		copyFileReader = new BufferedReader(new FileReader(file));
 		BufferedWriter writer = null;
-		try {
-			writer = new BufferedWriter(new FileWriter(tempFile));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		writer = new BufferedWriter(new FileWriter(tempFile));
 		String currentLine;
 		int lineTracker = 1;
 
-		try {
-			while((currentLine = copyFileReader.readLine()) != null) {
-				if(lineTracker ==(lineToDelete)) {
-					lineTracker++;
-					System.out.println("deleted from " + fileName + ": " + '"' + currentLine + '"' );
-					continue;
-				}
-				add(temp, tempFile, currentLine);
+		while((currentLine = copyFileReader.readLine()) != null) {
+			if(lineTracker ==(lineToDelete)) {
 				lineTracker++;
+				System.out.println("deleted from " + fileName + ": " + '"' + currentLine + '"' );
+				continue;
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			add(temp, tempFile, currentLine);
+			lineTracker++;
 		}
-		try {
-			copyFileReader.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		copyFileReader.close();
+
 		return writer;
 	}
 
 	//deletes everything in file
-	private static void clear(String fileName) {
-		try {
-			PrintWriter	writer = new PrintWriter(fileName);
-			writer.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private static void clear(String fileName) throws FileNotFoundException{
+		PrintWriter	writer = new PrintWriter(fileName);
+		writer.close();
 	}
 
 	//adds string into original file
-	private static void add(String fileName, File file, String text) {
+	private static void add(String fileName, File file, String text) throws IOException{
 		text = text.trim();
 
-		try {
-			FileWriter fileWriter = new FileWriter(file,true);    
-			BufferedWriter writer = new BufferedWriter(fileWriter);
-			writer.write(text);
-			writer.newLine();
-			writer.close();
-		} catch ( IOException e ) {
-			e.printStackTrace();
-		}
+		FileWriter fileWriter = new FileWriter(file,true);    
+		BufferedWriter writer = new BufferedWriter(fileWriter);
+		writer.write(text);
+		writer.newLine();
+		writer.close();
 	}
 }

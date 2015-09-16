@@ -209,7 +209,7 @@ public class TextBuddy {
 	}
 	
 	//sorts inputs to alphabetical order
-	protected static void sort(String fileName, File file) throws IOException {
+	protected static String sort(String fileName, File file) throws IOException {
 		List<String> lines = new ArrayList<String>();
 		lines = Files.readAllLines(Paths.get(fileName));
 		Collections.sort(lines);
@@ -218,6 +218,7 @@ public class TextBuddy {
 			add(fileName, file, element);
 		}
 		System.out.println(MESSAGE_SORT);
+		return MESSAGE_SORT;
 	}
 
 	//search for a string user typed in

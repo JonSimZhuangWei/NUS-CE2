@@ -9,6 +9,7 @@ import org.junit.Test;
 public class TextBuddyTest {
 	private static final String MESSAGE_ADD = "Added to %1$s: \"%2$s\"";
 	private static final String MESSAGE_CLEAR = "All contents deleted from %1$s";
+	private static final String MESSAGE_SORT = "sorted alphabetically";
 
 	@Test
 	public void testDisplay() throws FileNotFoundException, IOException {
@@ -25,10 +26,14 @@ public class TextBuddyTest {
 		testClearCommand("clear inputs", String.format(MESSAGE_CLEAR, "mytextbuddy.txt"), "mytextbuddy.txt");
 	}
 	
+	@Test
+	public void testSort() throws IOException {
+		testSortCommand("sort inputs", MESSAGE_SORT, "mytextbuddy.txt"  );
+	}
+	
 	private void testDisplayCommand(String description, String expected, String command) throws FileNotFoundException, IOException {
-		String fileName = "mytextbuddy.txt";
 		File file = new File("mytextbuddy.txt");
-		assertEquals(description, expected,(TextBuddy.display(fileName, file))); 
+		assertEquals(description, expected,(TextBuddy.display(command, file))); 
 	}
 
 	private void testAddCommand(String description, String expected, String command) throws IOException{
@@ -38,8 +43,12 @@ public class TextBuddyTest {
 	}
 	
 	private void testClearCommand(String description, String expected, String command) throws FileNotFoundException {
-		String fileName = "mytextbuddy.txt";
-		assertEquals(description, expected,(TextBuddy.clear(fileName)));
+		assertEquals(description, expected,(TextBuddy.clear(command)));
+	}
+	
+	private void testSortCommand(String description, String expected, String command) throws IOException{
+		File file = new File("mytextbuddy.txt");
+		assertEquals(description, expected,(TextBuddy.sort(command, file))); 
 	}
 	
 }

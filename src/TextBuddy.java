@@ -222,13 +222,15 @@ public class TextBuddy {
 	}
 
 	//search for a string user typed in
-	protected static void search (String wordSearched, String fileName, File file) throws IOException {
+	protected static boolean search (String wordSearched, String fileName, File file) throws IOException {
 		List<String> lines = new ArrayList<String>();
 		lines = Files.readAllLines(Paths.get(fileName));
+		boolean checker = false;
 		for (String element : lines ) {
 			if (element.contains(wordSearched)) {
 				System.out.println(element);
 			}
 		}
+		return checker;
 	}
 }

@@ -13,12 +13,12 @@ public class TextBuddyTest {
 
 	@Test
 	public void testDisplay() throws FileNotFoundException, IOException {
-		testDisplayCommand("display before any add", "mytextbuddy.txt is empty", "display");
+		testDisplayCommand("display before any add", "mytextbuddy.txt is empty", "mytextbuddy.txt");
 	}
 	
 	@Test
 	public void testAdd() throws IOException {
-		testAddCommand("add inputs", String.format(MESSAGE_ADD, "mytextbuddy.txt", "sample text"),"sample text");
+		testAddCommand("add inputs", String.format(MESSAGE_ADD, "mytextbuddy.txt", "sample string"),"sample string");
 	}
 	
 	@Test
@@ -29,6 +29,10 @@ public class TextBuddyTest {
 	@Test
 	public void testSort() throws IOException {
 		testSortCommand("sort inputs", MESSAGE_SORT, "mytextbuddy.txt"  );
+	}
+	@Test
+	public void testSearch() throws IOException {
+		testSearchCommand("search inputs", false,"string" );
 	}
 	
 	private void testDisplayCommand(String description, String expected, String command) throws FileNotFoundException, IOException {
@@ -49,6 +53,12 @@ public class TextBuddyTest {
 	private void testSortCommand(String description, String expected, String command) throws IOException{
 		File file = new File("mytextbuddy.txt");
 		assertEquals(description, expected,(TextBuddy.sort(command, file))); 
+	}
+	
+	private void testSearchCommand(String description, boolean expected, String command) throws IOException{
+		String fileName = "mytextbuddy.txt";
+		File file = new File("mytextbuddy.txt");
+		assertEquals(description, expected,(TextBuddy.search(command, fileName, file))); 
 	}
 	
 }

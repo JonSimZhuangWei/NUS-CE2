@@ -189,9 +189,10 @@ public class TextBuddy {
 	}
 
 	//deletes everything in file
-	protected static void clear(String fileName) throws FileNotFoundException{
+	protected static String clear(String fileName) throws FileNotFoundException{
 		PrintWriter	writer = new PrintWriter(fileName);
 		writer.close();
+		return (String.format(MESSAGE_CLEAR, fileName));
 	}
 
 	//adds string into original file

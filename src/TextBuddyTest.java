@@ -18,7 +18,7 @@ public class TextBuddyTest {
 	
 	@Test
 	public void testAdd() throws IOException {
-		testAddCommand("add inputs", String.format(MESSAGE_ADD, "mytextbuddy.txt", "sample string"),"sample string");
+		testAddCommand("add inputs", String.format(MESSAGE_ADD, "mytextbuddy.txt", "string"),"string");
 	}
 	
 	@Test
@@ -30,9 +30,17 @@ public class TextBuddyTest {
 	public void testSort() throws IOException {
 		testSortCommand("sort inputs", MESSAGE_SORT, "mytextbuddy.txt"  );
 	}
+	
 	@Test
 	public void testSearch() throws IOException {
 		testSearchCommand("search inputs", false,"string" );
+	}
+	
+	@Test
+	public void testAdd_Search() throws IOException {
+		testAddCommand("add inputs", String.format(MESSAGE_ADD, "mytextbuddy.txt", "my string")," my string");
+		testSearchCommand("search inputs", true ,"ring" );
+		
 	}
 	
 	private void testDisplayCommand(String description, String expected, String command) throws FileNotFoundException, IOException {

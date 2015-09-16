@@ -29,7 +29,8 @@ public class TextBuddy {
 	private static final String MESSAGE_DELETE_ERROR = "line not found, unable to delete";
 	private static final String MESSAGE_ADD = "Added to %1$s: \"%2$s\""; 
 	private static final String MESSAGE_COMMAND_ERROR = "Added to %1$s: \"%2$s\""; 
-	private static final String MESSAGE_NO_DISPLAY = "%1$s is empty"; 
+	private static final String MESSAGE_NO_DISPLAY = "%1$s is empty";
+	private static final String MESSAGE_SORT = "sorted alphabetically";
 
 	private static final String TEMP_FILE = "mytempfile.txt"; 
 
@@ -42,7 +43,7 @@ public class TextBuddy {
 		commandToDo(fileName, file, sc);
 	}
 
-	private static void commandToDo(String fileName, File file, Scanner sc) throws FileNotFoundException, IOException {
+	protected static void commandToDo(String fileName, File file, Scanner sc) throws FileNotFoundException, IOException {
 		while (true) {
 			String command = sc.next();
 
@@ -97,7 +98,7 @@ public class TextBuddy {
 	}
 
 	//displays text in the original file
-	private static void display(String fileName, File file) throws FileNotFoundException, IOException {
+	protected static String display(String fileName, File file) throws FileNotFoundException, IOException {
 		BufferedReader br = new BufferedReader(new FileReader(file));     
 		String line = null;
 		int bulletHeader = 2;
@@ -112,10 +113,11 @@ public class TextBuddy {
 			System.out.println(String.format(MESSAGE_NO_DISPLAY, fileName)); 
 		}
 		br.close();
+		return (String.format(MESSAGE_NO_DISPLAY, fileName));
 	} 
 
 	//deletes the line number user input
-	private static void delete(String fileName, File file, Scanner sc)throws FileNotFoundException, IOException {
+	protected static void delete(String fileName, File file, Scanner sc)throws FileNotFoundException, IOException {
 		int lineToDelete = sc.nextInt();
 		sc.nextLine(); // clears input stream
 		int numberOfLinesInFile = 0;
@@ -187,13 +189,13 @@ public class TextBuddy {
 	}
 
 	//deletes everything in file
-	private static void clear(String fileName) throws FileNotFoundException{
+	protected static void clear(String fileName) throws FileNotFoundException{
 		PrintWriter	writer = new PrintWriter(fileName);
 		writer.close();
 	}
 
 	//adds string into original file
-	private static void add(String fileName, File file, String text) throws IOException{
+	protected static String add(String fileName, File file, String text) throws IOException{
 		text = text.trim();
 		FileWriter fileWriter = new FileWriter(file,true);    
 		BufferedWriter writer = new BufferedWriter(fileWriter);
@@ -201,10 +203,12 @@ public class TextBuddy {
 		writer.write(text);
 		writer.newLine();
 		writer.close();
+		
+		return (String.format(MESSAGE_ADD, fileName, text));
 	}
 	
 	//sorts inputs to alphabetical order
-	private static void sort(String fileName, File file) throws IOException {
+	protected static void sort(String fileName, File file) throws IOException {
 		List<String> lines = new ArrayList<String>();
 		lines = Files.readAllLines(Paths.get(fileName));
 		Collections.sort(lines);
@@ -212,10 +216,11 @@ public class TextBuddy {
 		for (String element : lines) {
 			add(fileName, file, element);
 		}
+		System.out.println(MESSAGE_SORT);
 	}
 
 	//search for a string user typed in
-	private static void search (String wordSearched, String fileName, File file) throws IOException {
+	protected static void search (String wordSearched, String fileName, File file) throws IOException {
 		List<String> lines = new ArrayList<String>();
 		lines = Files.readAllLines(Paths.get(fileName));
 		for (String element : lines ) {

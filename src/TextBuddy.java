@@ -229,6 +229,7 @@ public class TextBuddy {
 		for (String element : lines ) {
 			if (element.contains(wordSearched)) {
 				System.out.println(element);
+				checker = true;
 			}
 		}
 		return checker;

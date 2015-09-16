@@ -14,33 +14,38 @@ public class TextBuddyTest {
 	@Test
 	public void testDisplay() throws FileNotFoundException, IOException {
 		testDisplayCommand("display before any add", "mytextbuddy.txt is empty", "mytextbuddy.txt");
+		TextBuddy.clear("mytextbuddy.txt");
 	}
 	
 	@Test
 	public void testAdd() throws IOException {
 		testAddCommand("add inputs", String.format(MESSAGE_ADD, "mytextbuddy.txt", "string"),"string");
+		TextBuddy.clear("mytextbuddy.txt");
 	}
 	
 	@Test
 	public void testClear() throws FileNotFoundException{
 		testClearCommand("clear inputs", String.format(MESSAGE_CLEAR, "mytextbuddy.txt"), "mytextbuddy.txt");
+		TextBuddy.clear("mytextbuddy.txt");
 	}
 	
 	@Test
 	public void testSort() throws IOException {
 		testSortCommand("sort inputs", MESSAGE_SORT, "mytextbuddy.txt"  );
+		TextBuddy.clear("mytextbuddy.txt");
 	}
 	
 	@Test
 	public void testSearch() throws IOException {
 		testSearchCommand("search inputs", false,"string" );
+		TextBuddy.clear("mytextbuddy.txt");
 	}
 	
 	@Test
 	public void testAdd_Search() throws IOException {
 		testAddCommand("add inputs", String.format(MESSAGE_ADD, "mytextbuddy.txt", "my string")," my string");
 		testSearchCommand("search inputs", true ,"ring" );
-		
+		TextBuddy.clear("mytextbuddy.txt");
 	}
 	
 	private void testDisplayCommand(String description, String expected, String command) throws FileNotFoundException, IOException {

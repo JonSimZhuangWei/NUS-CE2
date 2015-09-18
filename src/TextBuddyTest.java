@@ -48,6 +48,15 @@ public class TextBuddyTest {
 		TextBuddy.clear("mytextbuddy.txt");
 	}
 	
+	@Test
+	public void testAdd_Sort_display() throws IOException {
+		testAddCommand("add inputs", String.format(MESSAGE_ADD, "mytextbuddy.txt", "my string1")," my string1");
+		testAddCommand("add inputs", String.format(MESSAGE_ADD, "mytextbuddy.txt", "my string")," my string");
+		testSortCommand("sort inputs", MESSAGE_SORT, "mytextbuddy.txt"  );
+		testDisplayCommand("display after add", "my string" + "\nmy string1", "mytextbuddy.txt");
+		TextBuddy.clear("mytextbuddy.txt");
+	}
+	
 	private void testDisplayCommand(String description, String expected, String command) throws FileNotFoundException, IOException {
 		File file = new File("mytextbuddy.txt");
 		assertEquals(description, expected,(TextBuddy.display(command, file))); 

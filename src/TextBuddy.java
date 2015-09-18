@@ -98,7 +98,7 @@ public class TextBuddy {
 	}
 
 	//displays text in the original file
-	protected static String display(String fileName, File file) throws FileNotFoundException, IOException {
+	protected static boolean display(String fileName, File file) throws FileNotFoundException, IOException {
 		BufferedReader br = new BufferedReader(new FileReader(file));     
 		String line = null;
 		int bulletHeader = 2;
@@ -108,12 +108,14 @@ public class TextBuddy {
 				System.out.println(bulletHeader + ". " + line);
 				bulletHeader++;
 			}
+			br.close();
+			return true;
 		}
 		else {
-			System.out.println(String.format(MESSAGE_NO_DISPLAY, fileName)); 
+			System.out.println(String.format(MESSAGE_NO_DISPLAY, fileName));
+			br.close();
+			return false;
 		}
-		br.close();
-		return (String.format(MESSAGE_NO_DISPLAY, fileName));
 	} 
 
 	//deletes the line number user input

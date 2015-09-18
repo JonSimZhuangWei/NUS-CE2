@@ -10,10 +10,10 @@ public class TextBuddyTest {
 	private static final String MESSAGE_ADD = "Added to %1$s: \"%2$s\"";
 	private static final String MESSAGE_CLEAR = "All contents deleted from %1$s";
 	private static final String MESSAGE_SORT = "sorted alphabetically";
-
+	
 	@Test
 	public void testDisplay() throws FileNotFoundException, IOException {
-		testDisplayCommand("display before any add", "mytextbuddy.txt is empty", "mytextbuddy.txt");
+		testDisplayCommand("display before any add", false , "mytextbuddy.txt");
 		TextBuddy.clear("mytextbuddy.txt");
 	}
 	
@@ -53,11 +53,11 @@ public class TextBuddyTest {
 		testAddCommand("add inputs", String.format(MESSAGE_ADD, "mytextbuddy.txt", "my string1")," my string1");
 		testAddCommand("add inputs", String.format(MESSAGE_ADD, "mytextbuddy.txt", "my string")," my string");
 		testSortCommand("sort inputs", MESSAGE_SORT, "mytextbuddy.txt"  );
-		testDisplayCommand("display after add", "my string" + "\nmy string1", "mytextbuddy.txt");
+		testDisplayCommand("display after add", true, "mytextbuddy.txt");
 		TextBuddy.clear("mytextbuddy.txt");
 	}
 	
-	private void testDisplayCommand(String description, String expected, String command) throws FileNotFoundException, IOException {
+	private void testDisplayCommand(String description, boolean expected, String command) throws FileNotFoundException, IOException {
 		File file = new File("mytextbuddy.txt");
 		assertEquals(description, expected,(TextBuddy.display(command, file))); 
 	}
